@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -18,6 +20,7 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+
     @GetMapping
     public List<StudentRequestDto> getAllStudents() {
         return studentService.getAllStudents();

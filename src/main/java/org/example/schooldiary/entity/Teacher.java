@@ -18,6 +18,7 @@ public class Teacher {
     private String name;
     private String surname;
     private String password;
+    private String email;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Subject> subjects;

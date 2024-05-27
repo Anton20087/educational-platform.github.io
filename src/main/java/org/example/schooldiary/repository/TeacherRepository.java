@@ -10,4 +10,5 @@ import java.util.List;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findBySurname(String surname);
     Teacher findFirstById(Long id);
+    Teacher findByEmail(String email);
 }

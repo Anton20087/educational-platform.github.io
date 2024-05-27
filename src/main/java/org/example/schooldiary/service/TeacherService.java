@@ -34,6 +34,8 @@ public class TeacherService {
         Teacher teacher = new Teacher();
         teacher.setName(teacherRequestDto.getName());
         teacher.setSurname(teacherRequestDto.getSurname());
+        teacher.setEmail(teacherRequestDto.getEmail());
+        teacher.setPassword(teacherRequestDto.getPassword());
         teacher.setSubjects(teacherRequestDto.getSubjects());
         return teacherRepository.save(teacher);
     }
