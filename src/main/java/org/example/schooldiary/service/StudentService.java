@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,10 +35,11 @@ public class StudentService {
     }
 
     public void setStudentSubjectGrade(Long studentId, SubjectGradeRequestDto subjectGradeDto) throws Exception{
-        Student student = studentRepository.findByStudentId(studentId);
-        if (student == null) {
+        Optional<Student> optStudent = studentRepository.findById(studentId);
+        if (!optStudent.isPresent()) {
             throw new Exception("Student not found");
         }
+        Student student = optStudent.get();
         // Встановити оцінку зазначеного предмета для студента
         student.setGrade(subjectGradeDto.getGrade());
         studentRepository.save(student);
