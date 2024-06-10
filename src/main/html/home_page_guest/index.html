@@ -1,10 +1,237 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навчально-освітня платформа</title>
+    <style>
+        body {
+            background: linear-gradient(to right bottom, #007bff, #FFFF00); /* Перехід кольорів */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1ABC9C;
+        }
+
+        .hero {
+            color: #fff;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1ABC9C;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #16A085;
+        }
+
+        section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .course-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .course-card {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            max-width: 300px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .course-card:hover{
+            background-color: rgba(161, 165, 174, 0.39);
+            transform: scale(1.05);
+        }
+
+        .course-card img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: static;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .course-card img{
+            width: 300px;
+            height: 170px;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <div class="logo">
+        Освітня Платформа
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#">Головна</a></li>
+            <li><a href="grades.html">Оцінки</a></li>
+            <li><a href="#">Досягнення учнів</a></li>
+            <li><a href="#">Досягнення вчителів</a></li>
+        </ul>
+    </nav>
+</header>
 
+<section class="hero">
+    <div class="hero-content">
+        <h1>Ласкаво просимо на нашу освітню платформу</h1>
+    </div>
+</section>
+
+
+<section class="courses">
+    <div class="course-container">
+        <div onclick="redirectToPage('courses/english_course.html')" class="course-card">
+            <img src="photos/english.png" alt="Курс з англійської">
+            <h3>Англійська</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/algebra_course.html')" class="course-card">
+            <img src="photos/algebra.png" alt="Курс з алгебри">
+            <h3>Алгебра</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/geometry_course.html')" class="course-card">
+            <img src="photos/geometry.png" alt="Курс з геометрії">
+            <h3>Геометрія</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/phisics_course.html')" class="course-card">
+            <img src="photos/phisics.png" alt="Курс з фізики">
+            <h3>Фізика</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/chemistry_course.html')" class="course-card">
+            <img src="photos/chemistry.png" alt="Курс з хімії">
+            <h3>Хімія</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/history_of_Ukraine_course.html')" class="course-card">
+            <img src="photos/history_of_Ukraine.png" alt="Курс з історії України">
+            <h3>Історія України</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/history_of_the_world_course.html')" class="course-card">
+            <img src="photos/history_of_the_world.png" alt="Курс з всесвітньої історії">
+            <h3>Всесвітня історія</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/informatics_course.html')" class="course-card">
+            <img src="photos/informatics.png" alt="Курс з інформатики">
+            <h3>Інформатика</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/ukrainian_language_course.html')" class="course-card">
+            <img src="photos/ukrainian_language.png" alt="Курс з української мови">
+            <h3>Українська мова</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/ukrainian_literature_course.html')" class="course-card">
+            <img src="photos/ukrainian_literature.png" alt="Курс з української літератури">
+            <h3>Українська література</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/literature_of_the_world_course.html')" class="course-card">
+            <img src="photos/literature_of_the_world.png" alt="Курс з зарубіжної літератури">
+            <h3>Зарубіжна література</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/health_course.html')" class="course-card">
+            <img src="photos/basics_of_health.png" alt="Курс з основ здоров'я">
+            <h3>Основи здоров'я</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+        <div onclick="redirectToPage('courses/biology_course.html')" class="course-card">
+            <img src="photos/biology.png" alt="Курс з біології">
+            <h3>Біологія</h3>
+            <h4>Викладач: Demo Noname</h4>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 Освітня Платформа. Всі права захищено.</p>
+    <p>Розроблено командою Slobojan Geese</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const btn = document.querySelector('.btn');
+        btn.addEventListener('click', function() {
+            document.querySelector('.courses').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    function redirectToPage(pageUrl) {
+        window.location.href = pageUrl;
+    }
+
+
+</script>
 </body>
 </html>
