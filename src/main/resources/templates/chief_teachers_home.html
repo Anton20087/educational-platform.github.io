@@ -255,13 +255,13 @@
             display: block;
         }
 
-        #studentTableWrapper, #teacherTableWrapper {
+        #teacherTableWrapper {
             max-height: 400px; /* Максимальна висота для прокрутки */
             overflow-y: auto; /* Дозволяє прокручувати, якщо зміст перевищує висоту */
             margin-bottom: 10px; /* Відступ для відокремлення від форми додавання студентів */
         }
 
-        #studentTable, #teacherTable {
+         #teacherTable {
             width: 100%;
             border-collapse: collapse;
         }
@@ -299,21 +299,26 @@
         <h1>Welcome to our educational platform</h1>
     </div>
 </section>
-<section class="chiefTeacherOptions" id="chiefTeacherFunctions" >
+<!-- Teachers functions -->
+<section class="teacherOptions" id="teacherFunctions" >
     <div class="teacher-options-container">
-        <div class="teacher-options-card">
+        <div class="teacher-options-card" id="assignSubjectToTeacher">
             <h4>Assign a subject to a teacher</h4>
         </div>
-        <div class="teacher-options-card">
+        <div class="teacher-options-card" id="addDeleteTeacher">
             <h4>Add/Delete teachers</h4>
         </div>
-        <div class="teacher-options-card">
+        <div th:action="@{/report}" class="teacher-options-card">
+            <h4 onclick="redirectToPage('report.html')">School record</h4>
+            <div th:if="${param.error}">Page not found</div>
+        </div>
+        <div class="teacher-options-card" id="option-teachers-settings">
             <h4>Settings</h4>
         </div>
     </div>
 </section>
 
-<!-- Teacher list -->
+<!-- Students list, add, delete -->
 <section class="modal" id="teacherModal">
     <button class="close-btn" onclick="closeTeacherModal()">×</button>
     <h3>Student List</h3>
@@ -325,26 +330,25 @@
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Email</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <!-- Тут буде список вчителів -->
+            <!-- Тут буде список студентів -->
             </tbody>
         </table>
     </div>
     <hr>
     <h3>Add New Student</h3>
-    <form action="#" th:action="@{/addStudent}" method="post" id="addStudentForm">
-        <input type="text" id="studentName" placeholder="Name" required>
-        <input type="text" id="studentSurname" placeholder="Surname" required>
-        <input type="password" id="studentPassword" placeholder="Password" required>
-        <input type="text" id="studentGrade" placeholder="Grade">
-        <input type="email" id="studentEmail" placeholder="Email">
-        <button class="btn" type="submit">Add Student</button>
-        <div th:if="${param.error}">Student is already exist</div>
+    <form action="#" th:action="@{/addTeacher}" method="post" id="addTeacherForm">
+        <input type="text" id="teacherName" placeholder="Name" required>
+        <input type="text" id="teacherSurname" placeholder="Surname" required>
+        <input type="password" id="teacherPassword" placeholder="Password" required>
+        <input type="email" id="teacherEmail" placeholder="Email">
+        <button class="btn" type="submit">Add Teacher</button>
+        <div th:if="${param.error}">Teacher is already exist</div>
     </form>
 </section>
-
 <!-- Settings -->
 <section class="settings-container">
     <button class="close-btn" onclick="closeSettings()">×</button>
@@ -379,6 +383,9 @@
 </footer>
 <script>
     // Функція для показу вікна налаштувань
+    document.getElementById('option-teachers-settings').addEventListener('click', function() {
+        showSettings();
+    });
     function showSettings() {
         const settingsContainer = document.querySelector('.settings-container');
         settingsContainer.classList.add('active');
@@ -443,12 +450,12 @@
 
     /////////////// Teacher list //////////////
 
-    document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+    document.getElementById('addTeacherForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        const name = document.getElementById('studentName').value;
-        const surname = document.getElementById('studentSurname').value;
+        const name = document.getElementById('teacherName').value;
+        const surname = document.getElementById('teacherSurname').value;
 
-        fetch('/students', {
+        fetch('/teachers', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -456,101 +463,99 @@
             body: JSON.stringify({ name, surname }),
         }).then(() => {
             loadStudents();
-            document.getElementById('addStudentForm').reset();
+            document.getElementById('addTeacherForm').reset();
         });
     });
 
-    document.getElementById('addDeleteStudent').addEventListener('click', function() {
-        showStudentModal();
-        loadStudents();
+    document.getElementById('addDeleteTeacher').addEventListener('click', function() {
+        showTeacherModal();
+        loadTeachers();
     });
 
-    function showStudentModal() {
-        const studentModal = document.getElementById('studentModal');
-        studentModal.classList.add('active');
+    function showTeacherModal() {
+        const teacherModal = document.getElementById('teacherModal');
+        teacherModal.classList.add('active');
 
         // Отримуємо таблицю студентів і її обгортку
-        const studentTable = document.getElementById('studentTable');
-        const studentTableWrapper = document.getElementById('studentTableWrapper');
+        const teacherTable = document.getElementById('teacherTable');
+        const teacherTableWrapper = document.getElementById('teacherTableWrapper');
 
         // Отримуємо висоту таблиці
-        const tableHeight = studentTable.offsetHeight * 4;
+        const tableHeight = teacherTable.offsetHeight * 4;
 
         // Задаємо висоту обгортки таблиці
-        studentTableWrapper.style.height = `${tableHeight}px`;
+        teacherTableWrapper.style.height = `${tableHeight}px`;
     }
 
-    function closeStudentModal() {
-        const studentModal = document.getElementById('studentModal');
-        studentModal.classList.remove('active');
+    function closeTeacherModal() {
+        const teacherModal = document.getElementById('teacherModal');
+        teacherModal.classList.remove('active');
     }
 
 
-    function loadStudents() {
-        fetch('/students')
+    function loadTeachers() {
+        fetch('/teachers')
             .then(response => response.json())
             .then(data => {
-                const studentTableBody = document.getElementById('studentTable').querySelector('tbody');
-                studentTableBody.innerHTML = '';
-                data.forEach(student => {
+                const teacherTableBody = document.getElementById('teacherTable').querySelector('tbody');
+                teacherTableBody.innerHTML = '';
+                data.forEach(teacher => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${student.id}</td>
-                        <td>${student.name}</td>
-                        <td>${student.surname}</td>
-                        <td>${student.email}</td>
-                        <td><button onclick="deleteStudent(${student.id})">Delete</button></td>
+                        <td>${teacher.id}</td>
+                        <td>${teacher.name}</td>
+                        <td>${teacher.surname}</td>
+                        <td>${teacher.email}</td>
+                        <td><button onclick="deleteTeacher(${teacher.id})">Delete</button></td>
                     `;
-                    studentTableBody.appendChild(row);
+                    teacherTableBody.appendChild(row);
                 });
             });
     }
 
-    function deleteStudent(studentId) {
-        fetch(`/students/${studentId}`, {
+    function deleteTeacher(teacherId) {
+        fetch(`/teachers/${teacherId}`, {
             method: 'DELETE',
         }).then(() => {
-            loadStudents();
+            loadTeachers();
         });
     }
 
-    document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+    document.getElementById('addTeacherForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const id = document.getElementById('studentId').value;
-        const name = document.getElementById('studentName').value;
-        const surname = document.getElementById('studentSurname').value;
-        const password = document.getElementById('studentPassword').value;
-        const grade = document.getElementById('studentGrade').value;
-        const email = document.getElementById('studentEmail').value;
+        const id = document.getElementById('teacherId').value;
+        const name = document.getElementById('teacherName').value;
+        const surname = document.getElementById('teacherSurname').value;
+        const password = document.getElementById('teacherPassword').value;
+        const email = document.getElementById('teacherEmail').value;
 
-        const student = {
+        const teacher = {
             id: id,
             name: name,
             surname: surname,
             password: password,
-            grade: grade,
             email: email
         };
 
-        fetch('/students/add', {
+        fetch('/teachers/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(student),
+            body: JSON.stringify(teacher),
         }).then(response => {
             if (response.ok) {
-                console.log('Student added successfully');
+                console.log('Teacher added successfully');
                 // Очистити форму після успішного додавання
-                document.getElementById('addStudentForm').reset();
+                document.getElementById('addTeacherForm').reset();
                 // Опціонально, завантажити список учнів після додавання
-                loadStudents();
+                loadTeachers();
             } else {
-                console.error('Failed to add student');
+                console.error('Failed to add teacher');
             }
         }).catch(error => {
-            console.error('Error adding student:', error);
+            console.error('Error adding teacher:', error);
         });
     });
 </script>

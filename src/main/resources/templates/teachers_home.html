@@ -271,6 +271,24 @@
             border: 1px solid #ddd;
             text-align: left;
         }
+
+        #assignGradesModal form div {
+            margin-bottom: 10px;
+        }
+
+        #assignGradesModal label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        #assignGradesModal input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -311,9 +329,8 @@
         <div class="teacher-options-card">
             <h4>Subject</h4>
         </div>
-        <div th:action="@{/report}" class="teacher-options-card">
-            <h4 onclick="redirectToPage('report.html')">School record</h4>
-            <div th:if="${param.error}">Page not found</div>
+        <div class="teacher-options-card" onclick="openAssignGradesModal()">
+            <h4>School record</h4>
         </div>
         <div class="teacher-options-card">
             <h4>Settings</h4>
@@ -353,6 +370,27 @@
         <div th:if="${param.error}">Student is already exist</div>
     </form>
 </section>
+            <!-- School record window -->
+<section id="assignGradesModal" class="modal">
+    <button class="close-btn" onclick="closeAssignGradesModal()">×</button>
+    <h3>Assign Grades</h3>
+    <form id="assignGradesForm">
+        <div>
+            <label for="gradeStudentId">Student ID:</label>
+            <input type="number" id="gradeStudentId" name="studentId" required>
+        </div>
+        <div>
+            <label for="gradeSubjectId">Subject ID:</label>
+            <input type="number" id="gradeSubjectId" name="subjectId" required>
+        </div>
+        <div>
+            <label for="gradeValue">Grade:</label>
+            <input type="number" id="gradeValue" name="grade" min="1" max="100" required>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</section>
+
                 <!-- Settings -->
 <section class="settings-container">
     <button class="close-btn" onclick="closeSettings()">×</button>
@@ -448,51 +486,6 @@
     function redirectToPage(url) {
         window.location.href = url;
     }
-
-    /////////////////// Teachers list ///////////////////////////
-    document.getElementById('option-teachers-list').addEventListener('click', function() {
-        showTeacherModal();
-        loadTeachers();
-    });
-
-    function showTeacherModal() {
-        const studentModal = document.getElementById('teacherModal');
-        studentModal.classList.add('active');
-
-        // Отримуємо таблицю студентів і її обгортку
-        const teacherTable = document.getElementById('teacherTable');
-        const teacherTableWrapper = document.getElementById('teacherTableWrapper');
-
-        // Отримуємо висоту таблиці
-        const tableHeight = teacherTable.offsetHeight * 6;
-
-        // Задаємо висоту обгортки таблиці
-        teacherTableWrapper.style.height = `${tableHeight}px`;
-    }
-
-    function closeTeacherModal() {
-        const teacherModal = document.getElementById('teacherModal');
-        teacherModal.classList.remove('active');
-    }
-    function loadTeachers() {
-        fetch('/teachers')
-            .then(response => response.json())
-            .then(data => {
-                const teacherTableBody = document.getElementById('teacherTable').querySelector('tbody');
-                teacherTableBody.innerHTML = '';
-                data.forEach(teacher => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${teacher.id}</td>
-                        <td>${teacher.name}</td>
-                        <td>${teacher.surname}</td>
-                        <td>${teacher.email}</td>
-                    `;
-                    teacherTableBody.appendChild(row);
-                });
-            });
-    }
-
     /////////////// Student list //////////////
 
     document.getElementById('addStudentForm').addEventListener('submit', function(event) {
@@ -536,7 +529,74 @@
         const studentModal = document.getElementById('studentModal');
         studentModal.classList.remove('active');
     }
+    // Открыть модальное окно "Assign Grades"
+    function openAssignGradesModal() {
+        document.getElementById('assignGradesModal').classList.add('active');
+    }
 
+    // Закрыть модальное окно "Assign Grades"
+    function closeAssignGradesModal() {
+        document.getElementById('assignGradesModal').classList.remove('active');
+    }
+
+    // Handling the form submission for assigning grades
+    document.getElementById('assignGradesForm')
+        .addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const studentId = document.getElementById('gradeStudentId').value;
+            const subjectId = document.getElementById('gradeSubjectId').value;
+            const grade = document.getElementById('gradeValue').value;
+
+            const gradeData = {
+                studentId: studentId,
+                subjectId: subjectId,
+                grade: grade
+            };
+            const assignGrade = async (gradeData) => {
+                try {
+                    const response = await fetch('http://localhost:8080/assign-grades', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer YOUR_ACCESS_TOKEN_HERE' // Убедитесь, что токен верный
+                        },
+                        body: JSON.stringify(gradeData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('Grade assigned:', data);
+                } catch (error) {
+                    console.error('Error assigning grade:', error);
+                }
+            };
+
+// Пример использования функции assignGrade
+            assignGrade(gradeData);
+            // Sending data to the server
+            fetch('/assign-grades', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(gradeData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Grade assigned successfully');
+                        closeAssignGradesModal();
+                    } else {
+                        console.error('Failed to assign grade');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error assigning grade:', error);
+                });
+        });
 
     function loadStudents() {
         fetch('/students')
