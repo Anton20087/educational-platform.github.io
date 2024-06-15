@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section class="studentOptions" id="studentFunctions" >
+    <div class="teacher-options-container">
+        <div class="teacher-options-card">
+            <h4>Students</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Students' achievements</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Subjects</h4>
+        </div>
+        <div th:action="@{/report}" class="teacher-options-card">
+            <h4 onclick="redirectToPage('report.html')">School record</h4>
+            <div th:if="${param.error}">Page not found</div>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Settings</h4>
+        </div>
+    </div>
+</section>
+</body>
+</html>

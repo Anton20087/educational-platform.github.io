@@ -25,5 +25,5 @@ document.getElementById("emailResetLink").addEventListener("click", function(eve
 });
 
 function redirectToPage() {
-    window.location.href = "../home_page_guest/home_page_guest.html";
+    window.location.href = "../default_home.html";
 }

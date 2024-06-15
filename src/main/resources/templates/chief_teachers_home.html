@@ -281,7 +281,7 @@
     </div>
     <nav>
         <ul class="nav-links">
-            <li><a href="home.html">Home</a></li>
+            <li><a href="teachers_home.html">Home</a></li>
             <li><a href="#">Students' achievements</a></li>
             <li><a href="#">Teachers' achievements</a></li>
             <li class="dropdown"><a href="user.html">You<span class="arrow">&#9660;</span></a>
@@ -299,73 +299,21 @@
         <h1>Welcome to our educational platform</h1>
     </div>
 </section>
-<!-- Teachers functions -->
-<section class="teacher-options" id="teacherFunctions">
-    <div class="teacher-options-container">
-        <div class="teacher-options-card" id="option-teachers-list">
-            <h4>Teachers</h4>
-        </div>
-        <div class="teacher-options-card" id="addDeleteStudent">
-            <h4>Add/Delete student</h4>
-        </div>
-        <div class="teacher-options-card">
-            <h4>Subject</h4>
-        </div>
-        <div th:action="@{/report}" class="teacher-options-card">
-            <h4 onclick="redirectToPage('report.html')">School record</h4>
-            <div th:if="${param.error}">Page not found</div>
-        </div>
-        <div class="teacher-options-card">
-            <h4>Settings</h4>
-        </div>
-    </div>
-</section>
-
-<!-- Students functions -->
-<section class="teacher-options" id="studentFunctions" >
+<section class="chiefTeacherOptions" id="chiefTeacherFunctions" >
     <div class="teacher-options-container">
         <div class="teacher-options-card">
-            <h4>Students</h4>
-        </div>
-        <div class="teacher-options-card">
-            <h4>Students' achievements</h4>
-        </div>
-        <div class="teacher-options-card">
-            <h4>Subjects</h4>
-        </div>
-        <div th:action="@{/report}" class="teacher-options-card">
-            <h4 onclick="redirectToPage('report.html')">School record</h4>
-            <div th:if="${param.error}">Page not found</div>
-        </div>
-        <div class="teacher-options-card">
-            <h4>Settings</h4>
-        </div>
-    </div>
-</section>
-
-<!-- Chief_teachers functions -->
-<section class="teacher-options" id="chiefTeacherFunctions" >
-    <div class="teacher-options-container">
-        <div class="teacher-options-card">
-            <h4>Teachers</h4>
+            <h4>Assign a subject to a teacher</h4>
         </div>
         <div class="teacher-options-card">
             <h4>Add/Delete teachers</h4>
         </div>
         <div class="teacher-options-card">
-            <h4>Subject</h4>
-        </div>
-        <div th:action="@{/report}" class="teacher-options-card">
-            <h4 onclick="redirectToPage('report.html')">School record</h4>
-            <div th:if="${param.error}">Page not found</div>
-        </div>
-        <div class="teacher-options-card">
             <h4>Settings</h4>
         </div>
     </div>
 </section>
 
-            <!-- Teacher list -->
+<!-- Teacher list -->
 <section class="modal" id="teacherModal">
     <button class="close-btn" onclick="closeTeacherModal()">×</button>
     <h3>Student List</h3>
@@ -384,28 +332,6 @@
             </tbody>
         </table>
     </div>
-</section>
-
-            <!-- Students list, add, delete -->
-<section class="modal" id="studentModal">
-    <button class="close-btn" onclick="closeStudentModal()">×</button>
-    <h3>Student List</h3>
-    <div id="studentTableWrapper">
-        <table id="studentTable">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Тут буде список студентів -->
-            </tbody>
-        </table>
-    </div>
     <hr>
     <h3>Add New Student</h3>
     <form action="#" th:action="@{/addStudent}" method="post" id="addStudentForm">
@@ -418,7 +344,8 @@
         <div th:if="${param.error}">Student is already exist</div>
     </form>
 </section>
-                <!-- Settings -->
+
+<!-- Settings -->
 <section class="settings-container">
     <button class="close-btn" onclick="closeSettings()">×</button>
     <h3>Background Settings:</h3>
@@ -514,51 +441,7 @@
         window.location.href = url;
     }
 
-    /////////////////// Teachers list ///////////////////////////
-    document.getElementById('option-teachers-list').addEventListener('click', function() {
-        showTeacherModal();
-        loadTeachers();
-    });
-
-    function showTeacherModal() {
-        const studentModal = document.getElementById('teacherModal');
-        studentModal.classList.add('active');
-
-        // Отримуємо таблицю студентів і її обгортку
-        const teacherTable = document.getElementById('teacherTable');
-        const teacherTableWrapper = document.getElementById('teacherTableWrapper');
-
-        // Отримуємо висоту таблиці
-        const tableHeight = teacherTable.offsetHeight * 6;
-
-        // Задаємо висоту обгортки таблиці
-        teacherTableWrapper.style.height = `${tableHeight}px`;
-    }
-
-    function closeTeacherModal() {
-        const teacherModal = document.getElementById('teacherModal');
-        teacherModal.classList.remove('active');
-    }
-    function loadTeachers() {
-        fetch('/teachers')
-            .then(response => response.json())
-            .then(data => {
-                const teacherTableBody = document.getElementById('teacherTable').querySelector('tbody');
-                teacherTableBody.innerHTML = '';
-                data.forEach(teacher => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${teacher.id}</td>
-                        <td>${teacher.name}</td>
-                        <td>${teacher.surname}</td>
-                        <td>${teacher.email}</td>
-                    `;
-                    teacherTableBody.appendChild(row);
-                });
-            });
-    }
-
-    /////////////// Student list //////////////
+    /////////////// Teacher list //////////////
 
     document.getElementById('addStudentForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -670,40 +553,6 @@
             console.error('Error adding student:', error);
         });
     });
-
-
-    /////////////////// Roles  /////////////////////////////////////////
-    fetch('/api/users/role/{email}')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(role => {
-            // Тут role містить роль користувача у форматі рядка
-            console.log('User role:', role);
-
-            // Виконуємо дії в залежності від ролі користувача
-            switch (role) {
-                case 'TEACHER':
-                    document.getElementById("teacherFunctions").style.display = "block";
-                    break;
-                case 'STUDENT':
-                    document.getElementById("studentFunctions").style.display = "block";
-                    break;
-                case 'CHIEF_TEACHER':
-                    document.getElementById("chiefTeacherFunctions").style.display = "block";
-                    break;
-                default:
-                    // Виконуємо дії за замовчуванням або обробляємо невідомі ролі
-                    break;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user role:', error);
-            // Обробляємо помилку отримання ролі користувача
-        });
 </script>
 </body>
 </html>

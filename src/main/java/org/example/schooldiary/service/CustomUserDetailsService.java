@@ -33,11 +33,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             // Establish connection to database
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:8432/postgres", "postgres", "first121212");
 
-            String sql = "SELECT role FROM teachers WHERE email = ? " +
+            String sql = "SELECT 'TEACHER' AS role FROM teachers WHERE email = ?" +
                     "UNION " +
-                    "SELECT role FROM students WHERE email = ? " +
+                    "SELECT 'STUDENT' AS role FROM students WHERE email = ?" +
                     "UNION " +
-                    "SELECT role FROM chief_teachers WHERE email = ?";
+                    "SELECT 'CHIEF_TEACHER' AS role FROM chief_teachers WHERE email = ?";
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             statement.setString(2, email);
