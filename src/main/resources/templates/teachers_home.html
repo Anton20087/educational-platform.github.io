@@ -486,6 +486,51 @@
     function redirectToPage(url) {
         window.location.href = url;
     }
+
+    /////////////////// Teachers list ///////////////////////////
+    document.getElementById('option-teachers-list').addEventListener('click', function() {
+        showTeacherModal();
+        loadTeachers();
+    });
+
+    function showTeacherModal() {
+        const studentModal = document.getElementById('teacherModal');
+        studentModal.classList.add('active');
+
+        // Отримуємо таблицю студентів і її обгортку
+        const teacherTable = document.getElementById('teacherTable');
+        const teacherTableWrapper = document.getElementById('teacherTableWrapper');
+
+        // Отримуємо висоту таблиці
+        const tableHeight = teacherTable.offsetHeight * 6;
+
+        // Задаємо висоту обгортки таблиці
+        teacherTableWrapper.style.height = `${tableHeight}px`;
+    }
+
+    function closeTeacherModal() {
+        const teacherModal = document.getElementById('teacherModal');
+        teacherModal.classList.remove('active');
+    }
+    function loadTeachers() {
+        fetch('/teachers')
+            .then(response => response.json())
+            .then(data => {
+                const teacherTableBody = document.getElementById('teacherTable').querySelector('tbody');
+                teacherTableBody.innerHTML = '';
+                data.forEach(teacher => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${teacher.id}</td>
+                        <td>${teacher.name}</td>
+                        <td>${teacher.surname}</td>
+                        <td>${teacher.email}</td>
+                    `;
+                    teacherTableBody.appendChild(row);
+                });
+            });
+    }
+
     /////////////// Student list //////////////
 
     document.getElementById('addStudentForm').addEventListener('submit', function(event) {
