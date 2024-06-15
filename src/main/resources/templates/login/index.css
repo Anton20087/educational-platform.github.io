@@ -1,0 +1,87 @@
+body {
+    background: linear-gradient(to bottom, #007bff, #FFFF00); /* Перехід кольорів */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    background-color: #2C3E50;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container {
+    text-align: center;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="password"] {
+    border-radius: 10px; /* Радіус заокруглення для рядків вводу */
+    padding: 12px; /* Збільшує внутрішній відступ для більшого розміру поля вводу */
+    border: 1px solid #ccc; /* Стандартна границя */
+    width: 100%;
+    box-sizing: border-box; /* Забезпечує правильний розмір, включаючи поле та границю */
+    margin-bottom: 10px; /* Додатковий відступ знизу для візуального розділення між полями вводу */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto; /* Автоматична ширина */
+    margin-bottom: 10px; /* Додатковий відступ знизу між кнопками */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+#backLink {
+    background-color: #ffffff; /* Колір кнопки */
+    color: #2C3E50; /* Колір тексту */
+    border: 1px solid #DCDCDC; /* Темно-сірий край */
+    border-radius: 5px; /* Заокруглені кути */
+    padding: 10px 20px; /* Розмір внутрішнього відступу */
+    margin-bottom: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #2C3E50;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+}

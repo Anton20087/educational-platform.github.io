@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оцінки</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #007bff, #FFFF00); /* Перехід кольорів */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1ABC9C;
+        }
+
+        .grades-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .grades-container h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .grades-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .grades-container table, .grades-container th, .grades-container td {
+            border: 1px solid #ddd;
+        }
+
+        .grades-container th, .grades-container td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .grades-container th {
+            background-color: #f2f2f2;
+        }
+
+        .grades-container .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .grades-container .controls button {
+            padding: 10px 20px;
+            background-color: #1ABC9C;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .grades-container .controls button:hover {
+            background-color: #16A085;
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: static;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        Освітня Платформа
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="home.html">Головна</a></li>
+            <li><a href="report.html">Оцінки</a></li>
+            <li><a href="#">Досягнення учнів</a></li>
+            <li><a href="#">Досягнення вчителів</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="grades-container">
+    <h3>Оцінки за тиждень <span id="week-dates"></span></h3>
+    <div class="controls">
+        <button onclick="previousWeek()">Попередній тиждень</button>
+        <button onclick="goToCurrentWeek()">Сьогодні</button>
+        <button onclick="nextWeek()">Наступний тиждень</button>
+    </div>
+    <div id="grades-tables">
+        <!-- Tables will be inserted here by JavaScript -->
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Освітня Платформа. Всі права захищено.</p>
+    <p>Розроблено командою Slobojan Geese</p>
+</footer>
+
+<script>
+    const gradesData = {
+        "2024-05-28": [
+            { course: "Англійська", grade: 11, comment: "" },
+            { course: "Алгебра", grade: 11, comment: "" },
+            { course: "Геометрія", grade: 11, comment: "" },
+            { course: "Хімія", grade: 11, comment: "" },
+            { course: "Фізика", grade: 11, comment: "" },
+            { course: "Історія України", grade: 11, comment: "" },
+            { course: "Всесвітня історія", grade: 11, comment: "" },
+            { course: "Українська мова", grade: 11, comment: "" },
+            { course: "Українська література", grade: 11, comment: "" },
+            { course: "Зарубіжна література", grade: 11, comment: "" }
+        ],
+
+    };
+
+    let currentDate = new Date();
+    const today = new Date();
+
+    function getMonday(d) {
+        d = new Date(d);
+        const day = d.getDay(),
+            diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    }
+
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    function renderTables(date) {
+        const monday = getMonday(date);
+        const weekDates = [];
+
+        for (let i = 0; i < 5; i++) {
+            const day = new Date(monday);
+            day.setDate(monday.getDate() + i);
+            weekDates.push(formatDate(day));
+        }
+
+        document.getElementById('week-dates').textContent = `${weekDates[0]} - ${weekDates[4]}`;
+        const tablesContainer = document.getElementById('grades-tables');
+        tablesContainer.innerHTML = '';
+
+        weekDates.forEach(date => {
+            const grades = gradesData[date] || [];
+            let tableHTML = `
+                    <h4>${date}</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Курс</th>
+                                <th>Оцінка</th>
+                                <th>Зауваження</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+            grades.forEach(grade => {
+                tableHTML += `
+                        <tr>
+                            <td>${grade.course}</td>
+                            <td>${grade.grade}</td>
+                            <td>${grade.comment}</td>
+                        </tr>
+                    `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+
+            tablesContainer.innerHTML += tableHTML;
+        });
+    }
+
+    function previousWeek() {
+        currentDate.setDate(currentDate.getDate() - 7);
+        renderTables(currentDate);
+    }
+
+    function nextWeek() {
+        currentDate.setDate(currentDate.getDate() + 7);
+        renderTables(currentDate);
+    }
+
+    function goToCurrentWeek() {
+        currentDate = new Date(today);
+        renderTables(currentDate);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTables(currentDate);
+    });
+</script>
+</body>
+</html>

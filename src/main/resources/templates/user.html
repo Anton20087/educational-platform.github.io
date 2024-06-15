@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Особиста вебсторінка</title>
+    <style>
+        :root {
+            --bg-color-light: #ffffff;
+            --text-color-light: #000000;
+            --bg-color-dark: #121212;
+            --text-color-dark: #ffffff;
+        }
+
+        body.light-mode {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theme-toggle-button {
+            margin: 10px 0;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .project {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="light-mode">
+<div class="container">
+    <h1>Програмування</h1>
+    <button class="theme-toggle-button" onclick="toggleTheme()">Переключити тему</button>
+
+    <section>
+        <h2>Про мене</h2>
+        <p>Привіт! Я захоплююся програмуванням і створенням веб-додатків. Маю досвід у різних мовах програмування та фреймворках.</p>
+    </section>
+
+    <section>
+        <h2>Навички</h2>
+        <ul>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>HTML & CSS</li>
+            <li>React</li>
+            <li>Node.js</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Проекти</h2>
+        <div class="project">
+            <h3>Проект 1</h3>
+            <p>Опис проекту 1. Це може бути короткий опис того, що проект робить і які технології використовувалися.</p>
+        </div>
+        <div class="project">
+            <h3>Проект 2</h3>
+            <p>Опис проекту 2. Це може бути короткий опис того, що проект робить і які технології використовувалися.</p>
+        </div>
+    </section>
+</div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
+    }
+</script>
+</body>
+</html>

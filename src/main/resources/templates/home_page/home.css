@@ -1,0 +1,220 @@
+body {
+    background: linear-gradient(to bottom, #007bff, #FFFF00); /* Color gradient */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #2C3E50;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #1ABC9C;
+}
+
+.nav-links li {
+    position: relative;
+    margin: 0 10px;
+}
+
+.arrow {
+    margin-left: 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2C3E50;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px #2C3E50;
+    z-index: 1;
+    left: -100px;
+    top: 100%;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #575757;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .arrow {
+    transform: rotate(180deg);
+}
+
+.hero {
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero-content {
+    max-width: 600px;
+    margin: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1ABC9C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #16A085;
+}
+
+section {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.teacher-options-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 113px;
+}
+
+.teacher-options-card {
+    background-color: #789E19;
+    padding: 20px;
+    box-shadow: 5px 10px 10px rgb(44, 38, 38);
+    width: 200px;
+    border-radius: 5px;
+    color: #ffffff;
+    max-width: 300px;
+    text-align: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.teacher-options-card:hover {
+    background: linear-gradient(to bottom, #007bff, #FFFF00);
+    transform: scale(1.05);
+    color: #ffffff;
+}
+
+.course-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.course-card {
+    background: linear-gradient(to bottom, #0b0a0a, #ff001e);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #121310;
+    border-radius: 5px;
+    max-width: 300px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.course-card:hover {
+    background: linear-gradient(to bottom, #007bff, #FFFF00);
+    transform: scale(1.05);
+    color: #0b0a0a;
+}
+
+.course-card img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.course-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    animation: fadeIn 0.5s;
+}
+
+.course-container.active {
+    display: block;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+footer {
+    background-color: #2C3E50;
+    color: #fff;
+    position: static;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.course-card img {
+    width: 300px;
+    height: 170px;
+}

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навчально-освітня платформа</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #007bff, #FFFF00); /* Color gradient */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1ABC9C;
+        }
+
+        .nav-links li {
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .arrow {
+            margin-left: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #2C3E50;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px #2C3E50;
+            z-index: 1;
+            left: -100px;
+            top: 100%;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #575757;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .arrow {
+            transform: rotate(180deg);
+        }
+
+        .hero {
+            color: #fff;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1ABC9C;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #16A085;
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .teacher-options-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 113px;
+        }
+
+        .teacher-options-card {
+            background-color: #789E19;
+            padding: 20px;
+            box-shadow: 5px 10px 10px rgb(44, 38, 38);
+            width: 150px;
+            border-radius: 5px;
+            color: #ffffff;
+            max-width: 300px;
+            text-align: center;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .teacher-options-card:hover {
+            background: linear-gradient(to bottom, #007bff, #FFFF00);
+            transform: scale(1.05);
+            color: #ffffff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 1s ease;
+            background-color: transparent;
+            border: none;
+            color: #FF5E5E;
+        }
+
+        .close-btn:hover {
+            background-color: #f80606;
+            color: white;
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: #fff;
+            position: static;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .remarks-text-from-developer{
+            font-size: 8px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .settings-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            z-index: 2;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .settings-container.active {
+            display: block;
+        }
+
+        .settings-container h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .settings-container .btn {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            z-index: 2;
+            width: 80%; /* Фіксована ширина вікна */
+            max-width: 900px; /* Максимальна ширина вікна */
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        #studentTableWrapper, #teacherTableWrapper {
+            max-height: 400px; /* Максимальна висота для прокрутки */
+            overflow-y: auto; /* Дозволяє прокручувати, якщо зміст перевищує висоту */
+            margin-bottom: 10px; /* Відступ для відокремлення від форми додавання студентів */
+        }
+
+        #studentTable, #teacherTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #studentTable th, teacherTable th, #studentTable td, #teacherTable td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="logo">
+        <a>Educational Platform</a>
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="#">Students' achievements</a></li>
+            <li><a href="#">Teachers' achievements</a></li>
+            <li class="dropdown"><a href="user.html">You<span class="arrow">&#9660;</span></a>
+                <div class="dropdown-content">
+                    <a href="report.html">School report card</a>
+                    <a href="#">Your achievements</a>
+                    <a action="#" th:action="@{/user}" href="user.html">Account</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to our educational platform</h1>
+    </div>
+</section>
+<!-- Teachers functions -->
+<section class="teacher-options" id="teacherFunctions">
+    <div class="teacher-options-container">
+        <div class="teacher-options-card" id="option-teachers-list">
+            <h4>Teachers</h4>
+        </div>
+        <div class="teacher-options-card" id="addDeleteStudent">
+            <h4>Add/Delete student</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Subject</h4>
+        </div>
+        <div th:action="@{/report}" class="teacher-options-card">
+            <h4 onclick="redirectToPage('report.html')">School record</h4>
+            <div th:if="${param.error}">Page not found</div>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Settings</h4>
+        </div>
+    </div>
+</section>
+
+<!-- Students functions -->
+<section class="teacher-options" id="studentFunctions" >
+    <div class="teacher-options-container">
+        <div class="teacher-options-card">
+            <h4>Students</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Students' achievements</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Subjects</h4>
+        </div>
+        <div th:action="@{/report}" class="teacher-options-card">
+            <h4 onclick="redirectToPage('report.html')">School record</h4>
+            <div th:if="${param.error}">Page not found</div>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Settings</h4>
+        </div>
+    </div>
+</section>
+
+<!-- Chief_teachers functions -->
+<section class="teacher-options" id="chiefTeacherFunctions" >
+    <div class="teacher-options-container">
+        <div class="teacher-options-card">
+            <h4>Teachers</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Add/Delete teachers</h4>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Subject</h4>
+        </div>
+        <div th:action="@{/report}" class="teacher-options-card">
+            <h4 onclick="redirectToPage('report.html')">School record</h4>
+            <div th:if="${param.error}">Page not found</div>
+        </div>
+        <div class="teacher-options-card">
+            <h4>Settings</h4>
+        </div>
+    </div>
+</section>
+
+            <!-- Teacher list -->
+<section class="modal" id="teacherModal">
+    <button class="close-btn" onclick="closeTeacherModal()">×</button>
+    <h3>Student List</h3>
+    <div id="teacherTableWrapper">
+        <table id="teacherTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Тут буде список вчителів -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+            <!-- Students list, add, delete -->
+<section class="modal" id="studentModal">
+    <button class="close-btn" onclick="closeStudentModal()">×</button>
+    <h3>Student List</h3>
+    <div id="studentTableWrapper">
+        <table id="studentTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Тут буде список студентів -->
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <h3>Add New Student</h3>
+    <form action="#" th:action="@{/addStudent}" method="post" id="addStudentForm">
+        <input type="text" id="studentName" placeholder="Name" required>
+        <input type="text" id="studentSurname" placeholder="Surname" required>
+        <input type="password" id="studentPassword" placeholder="Password" required>
+        <input type="text" id="studentGrade" placeholder="Grade">
+        <input type="email" id="studentEmail" placeholder="Email">
+        <button class="btn" type="submit">Add Student</button>
+        <div th:if="${param.error}">Student is already exist</div>
+    </form>
+</section>
+                <!-- Settings -->
+<section class="settings-container">
+    <button class="close-btn" onclick="closeSettings()">×</button>
+    <h3>Background Settings:</h3>
+    <div class="btn-container">
+        <label for="bgImageInput" class="btn">Choose Background Image
+            <input type="file" id="bgImageInput" accept="image/*" class="file-input" onchange="setCustomBackground()">
+        </label>
+        <label for="colorPicker" class="btn">Choose Background Color
+            <input type="color" id="colorPicker" class="file-input" onchange="setBackgroundColor()">
+        </label>
+        <label for="defaultBackground" class="btn">Default Background
+            <input type="button" class="file-input" id="defaultBackground" onclick="setDefaultBackground()">
+        </label>
+    </div>
+    <hr style="height: 2px; background-color: black; border: none;">
+    <h3>Button settings:</h3>
+    <div class="btn-container">
+        <label for="colorButtonPicker" class="btn">Choose Button Color
+            <input type="color" id="colorButtonPicker" class="file-input" onchange="setButtonColor()">
+        </label>
+        <label for="defaultButtonBackground" class="btn">Default Button Color
+            <input type="button" class="file-input" id="defaultButtonBackground" onclick="setDefaultButtonBackground()">
+        </label>
+    </div>
+</section>
+<footer class="wrapper">
+    <p>&copy; 2024 Educational Platform. All rights reserved.</p>
+    <p>Developed by the Slobojan Geese team</p>
+    <p class="remarks-text-from-developer">Головний розробник проекту: Лобачевський Платон.</p>
+    <p class="remarks-text-from-developer">P.S. Зробив по-факту все сам.</p>
+</footer>
+<script>
+    // Функція для показу вікна налаштувань
+    function showSettings() {
+        const settingsContainer = document.querySelector('.settings-container');
+        settingsContainer.classList.add('active');
+    }
+
+    // Функція для закриття вікна налаштувань
+    function closeSettings() {
+        const settingsContainer = document.querySelector('.settings-container');
+        settingsContainer.classList.remove('active');
+    }
+
+    // Змінюємо колір .teacher-options-card при натисканні на "Settings"
+    document.querySelector('.teacher-options-card:nth-child(5)').addEventListener('click', function() {
+        showSettings();
+    });
+
+    // Функція для встановлення користувацького фону зображення
+    function setCustomBackground() {
+        const input = document.getElementById('bgImageInput');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.body.style.backgroundImage = `url(${e.target.result})`;
+                document.body.style.backgroundSize = 'cover'; // або 'contain' в залежності від ваших потреб
+                document.body.style.backgroundPosition = 'center center'; // можна змінити положення за потребою
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Функція для встановлення користувацького кольору фону
+    function setBackgroundColor() {
+        const colorPicker = document.getElementById('colorPicker');
+        document.body.style.backgroundImage = 'none'; // прибираємо зображення, якщо було
+        document.body.style.backgroundColor = colorPicker.value;
+    }
+
+    // Функція для встановлення стандартного фону
+    function setDefaultBackground() {
+        document.body.style.backgroundImage = 'linear-gradient(to bottom, #007bff, #FFFF00)';
+        document.body.style.backgroundColor = '#f4f4f4';
+    }
+
+    function setButtonColor() {
+        const colorPicker = document.getElementById('colorButtonPicker');
+        const cards = document.querySelectorAll('.teacher-options-card');
+        cards.forEach(card => {
+            card.style.backgroundColor = colorPicker.value;
+        });
+    }
+
+    function setDefaultButtonBackground() {
+        const cards = document.querySelectorAll('.teacher-options-card');
+        cards.forEach(card => {
+            card.style.backgroundColor = '#789E19'; // дефолтний колір
+        });
+    }
+
+    function redirectToPage(url) {
+        window.location.href = url;
+    }
+
+    /////////////////// Teachers list ///////////////////////////
+    document.getElementById('option-teachers-list').addEventListener('click', function() {
+        showTeacherModal();
+        loadTeachers();
+    });
+
+    function showTeacherModal() {
+        const studentModal = document.getElementById('teacherModal');
+        studentModal.classList.add('active');
+
+        // Отримуємо таблицю студентів і її обгортку
+        const teacherTable = document.getElementById('teacherTable');
+        const teacherTableWrapper = document.getElementById('teacherTableWrapper');
+
+        // Отримуємо висоту таблиці
+        const tableHeight = teacherTable.offsetHeight * 6;
+
+        // Задаємо висоту обгортки таблиці
+        teacherTableWrapper.style.height = `${tableHeight}px`;
+    }
+
+    function closeTeacherModal() {
+        const teacherModal = document.getElementById('teacherModal');
+        teacherModal.classList.remove('active');
+    }
+    function loadTeachers() {
+        fetch('/teachers')
+            .then(response => response.json())
+            .then(data => {
+                const teacherTableBody = document.getElementById('teacherTable').querySelector('tbody');
+                teacherTableBody.innerHTML = '';
+                data.forEach(teacher => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${teacher.id}</td>
+                        <td>${teacher.name}</td>
+                        <td>${teacher.surname}</td>
+                        <td>${teacher.email}</td>
+                    `;
+                    teacherTableBody.appendChild(row);
+                });
+            });
+    }
+
+    /////////////// Student list //////////////
+
+    document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('studentName').value;
+        const surname = document.getElementById('studentSurname').value;
+
+        fetch('/students', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, surname }),
+        }).then(() => {
+            loadStudents();
+            document.getElementById('addStudentForm').reset();
+        });
+    });
+
+    document.getElementById('addDeleteStudent').addEventListener('click', function() {
+        showStudentModal();
+        loadStudents();
+    });
+
+    function showStudentModal() {
+        const studentModal = document.getElementById('studentModal');
+        studentModal.classList.add('active');
+
+        // Отримуємо таблицю студентів і її обгортку
+        const studentTable = document.getElementById('studentTable');
+        const studentTableWrapper = document.getElementById('studentTableWrapper');
+
+        // Отримуємо висоту таблиці
+        const tableHeight = studentTable.offsetHeight * 4;
+
+        // Задаємо висоту обгортки таблиці
+        studentTableWrapper.style.height = `${tableHeight}px`;
+    }
+
+    function closeStudentModal() {
+        const studentModal = document.getElementById('studentModal');
+        studentModal.classList.remove('active');
+    }
+
+
+    function loadStudents() {
+        fetch('/students')
+            .then(response => response.json())
+            .then(data => {
+                const studentTableBody = document.getElementById('studentTable').querySelector('tbody');
+                studentTableBody.innerHTML = '';
+                data.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.surname}</td>
+                        <td>${student.email}</td>
+                        <td><button onclick="deleteStudent(${student.id})">Delete</button></td>
+                    `;
+                    studentTableBody.appendChild(row);
+                });
+            });
+    }
+
+    function deleteStudent(studentId) {
+        fetch(`/students/${studentId}`, {
+            method: 'DELETE',
+        }).then(() => {
+            loadStudents();
+        });
+    }
+
+    document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('studentId').value;
+        const name = document.getElementById('studentName').value;
+        const surname = document.getElementById('studentSurname').value;
+        const password = document.getElementById('studentPassword').value;
+        const grade = document.getElementById('studentGrade').value;
+        const email = document.getElementById('studentEmail').value;
+
+        const student = {
+            id: id,
+            name: name,
+            surname: surname,
+            password: password,
+            grade: grade,
+            email: email
+        };
+
+        fetch('/students/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(student),
+        }).then(response => {
+            if (response.ok) {
+                console.log('Student added successfully');
+                // Очистити форму після успішного додавання
+                document.getElementById('addStudentForm').reset();
+                // Опціонально, завантажити список учнів після додавання
+                loadStudents();
+            } else {
+                console.error('Failed to add student');
+            }
+        }).catch(error => {
+            console.error('Error adding student:', error);
+        });
+    });
+
+
+    /////////////////// Roles  /////////////////////////////////////////
+    fetch('/api/users/role/{email}')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(role => {
+            // Тут role містить роль користувача у форматі рядка
+            console.log('User role:', role);
+
+            // Виконуємо дії в залежності від ролі користувача
+            switch (role) {
+                case 'TEACHER':
+                    document.getElementById("teacherFunctions").style.display = "block";
+                    break;
+                case 'STUDENT':
+                    document.getElementById("studentFunctions").style.display = "block";
+                    break;
+                case 'CHIEF_TEACHER':
+                    document.getElementById("chiefTeacherFunctions").style.display = "block";
+                    break;
+                default:
+                    // Виконуємо дії за замовчуванням або обробляємо невідомі ролі
+                    break;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user role:', error);
+            // Обробляємо помилку отримання ролі користувача
+        });
+</script>
+</body>
+</html>
