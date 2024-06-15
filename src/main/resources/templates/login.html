@@ -1,28 +1,240 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Освітня платформа</title>
+    <style>
+        :root {
+            --bg-color-light: #f4f4f4;
+            --text-color-light: #000000;
+            --bg-color-dark: #121212;
+            --text-color-dark: #ffffff;
+            --container-bg-light: #ffffff;
+            --container-bg-dark: #1e1e1e;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #007bff, #FFFF00);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        body.light-mode {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        header {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch input {
+            height: 0;
+            width: 0;
+            visibility: hidden;
+        }
+
+        .theme-switch-label {
+            cursor: pointer;
+            text-indent: -9999px;
+            width: 52px;
+            height: 27px;
+            background: grey;
+            display: block;
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .theme-switch-label:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 23px;
+            height: 23px;
+            background: #fff;
+            border-radius: 90px;
+            transition: 0.3s;
+        }
+
+        .theme-switch input:checked + .theme-switch-label {
+            background: #007bff;
+        }
+
+        .theme-switch input:checked + .theme-switch-label:after {
+            left: calc(100% - 2px);
+            transform: translateX(-100%);
+        }
+
+        .theme-switch-label:active:after {
+            width: 30px;
+        }
+
+        .remarks-text-from-developer{
+            font-size: 8px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: var(--container-bg-light);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container.dark-mode {
+            background-color: var(--container-bg-dark);
+            border-color: #333;
+        }
+
+        input[type="text"], input[type="password"] {
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        #backLink {
+            background-color: #ffffff;
+            color: #2C3E50;
+            border: 1px solid #DCDCDC;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
+<body class="light-mode">
+<header>
+    <div class="logo">Educational Platform</div>
+    <div class="theme-switch">
+        <input type="checkbox" id="theme-switch" />
+        <label for="theme-switch" class="theme-switch-label">Переключити тему</label>
+    </div>
+</header>
+<div class="container" id="loginContainer">
     <h1>Login</h1>
     <form action="#" th:action="@{/login}" method="post">
-       <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+        <div class="form-group">
+            <label for="email">Username:</label>
+            <input type="text" id="email" name="username" placeholder="Email" required>
         </div>
-        <br/>
-        <div>
+        <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
         </div>
-        <br/>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-        <br/>
-        <div th:if="${param.error}">
-            Invalid username or password.
-        </div>
+        <button type="submit">Login</button>
+        <p><a href="#" id="forgotPassword">Forgot your password?</a></p>
+        <div th:if="${param.error}">Invalid username or password.</div>
     </form>
+    <div>
+        <h2 class="login-heading">Some courses may be open to guests</h2>
+        <button type="button" id="guestLogin" onclick="redirectToPage()">Login as Guest</button>
+    </div>
+</div>
+<div class="container" id="resetPasswordContainer" style="display: none; margin-bottom: 140px">
+    <h1>Reset Password</h1>
+    <h3>Search by email</h3>
+    <div class="form-group">
+        <input type="text" id="emailToFind" name="email" placeholder="Email" required>
+    </div>
+    <button type="submit" id="emailResetLink">By email</button>
+    <button id="backLink">⭠</button>
+</div>
+<footer>
+    <p>&copy; 2024 Освітня Платформа. Всі права захищено.</p>
+    <p class="remarks-text-from-developer">Головний розробник проекту: Лобачевський Платон.</p>
+    <p class="remarks-text-from-developer">P.S. Зробив по-факту все сам.</p>
+</footer>
+<script>
+    document.getElementById('theme-switch').addEventListener('change', function() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
+        document.querySelectorAll('.container').forEach(container => {
+            container.classList.toggle('dark-mode');
+        });
+    });
+
+    document.getElementById("forgotPassword").addEventListener("click", function(event){
+        event.preventDefault();
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("resetPasswordContainer").style.display = "block";
+    });
+
+    document.getElementById("backLink").addEventListener("click", function(event){
+        event.preventDefault();
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("resetPasswordContainer").style.display = "none";
+    });
+
+    function redirectToPage() {
+        window.location.href = "home_page_guest/home_page_guest.html";
+    }
+</script>
 </body>
 </html>

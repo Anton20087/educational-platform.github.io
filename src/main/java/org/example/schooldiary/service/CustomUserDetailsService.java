@@ -8,6 +8,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -18,17 +24,125 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public String getUserRole(String email) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish connection to database
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:8432/postgres", "postgres", "first121212");
+
+            String sql = "SELECT role FROM teachers WHERE email = ? " +
+                    "UNION " +
+                    "SELECT role FROM students WHERE email = ? " +
+                    "UNION " +
+                    "SELECT role FROM chief_teachers WHERE email = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, email);
+            statement.setString(3, email);
+
+            // Execute the query
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("role");
+            } else {
+                throw new UsernameNotFoundException("User not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to the database", e);
+        } finally {
+            // Close JDBC resources in finally block
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // In a real application, you would fetch user details from a database
-        if ("user".equals(username)) {
-            return User.builder()
-                    .username("user")
-                    .password(passwordEncoder.encode("password"))
-                    .roles("USER")
-                    .build();
-        } else {
-            throw new UsernameNotFoundException("User not found");
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish connection to database
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:8432/postgres", "postgres", "first121212");
+
+            String sql = "SELECT email, password, 'TEACHER' AS role FROM teachers WHERE email = ? " +
+                    "UNION " +
+                    "SELECT email, password, 'STUDENT' AS role FROM students WHERE email = ? " +
+                    "UNION " +
+                    "SELECT email, password, 'CHIEF_TEACHER' AS role FROM chief_teachers WHERE email = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, email);
+            statement.setString(3, email);
+
+            // Execute the query
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String userEmail = resultSet.getString("email");
+                String userPassword = resultSet.getString("password");
+                String role = resultSet.getString("role");
+
+                // Build UserDetails object based on role
+                switch (role) {
+                    case "TEACHER":
+                        return User.builder()
+                                .username(userEmail)
+                                .password(passwordEncoder.encode(userPassword))
+                                .roles("TEACHER")
+                                .build();
+                    case "STUDENT":
+                        return User.builder()
+                                .username(userEmail)
+                                .password(passwordEncoder.encode(userPassword))
+                                .roles("STUDENT")
+                                .build();
+                    case "CHIEF_TEACHER":
+                        return User.builder()
+                                .username(userEmail)
+                                .password(passwordEncoder.encode(userPassword))
+                                .roles("CHIEF_TEACHER")
+                                .build();
+                    default:
+                        throw new UsernameNotFoundException("Unknown role for user " + userEmail);
+                }
+            } else {
+                throw new UsernameNotFoundException("User not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to the database", e);
+        } finally {
+            // Close JDBC resources in finally block
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // Log the exception or handle it appropriately
+                e.printStackTrace();
+            }
         }
     }
 }

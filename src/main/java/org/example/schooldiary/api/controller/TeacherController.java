@@ -20,6 +20,11 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
+    @GetMapping("/user")
+    public String userPage() {
+        return "user";
+    }
+
     @GetMapping
     public List<TeacherRequestDto> getAllTeachers() {
         return teacherService.getAllTeachers();
